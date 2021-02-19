@@ -85,7 +85,7 @@ public class PersonDAO {
     //метод добавляет человека
     public void save(Person person){
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO VALUES(1, ?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Person VALUES(1, ?, ?, ?)");
 
             preparedStatement.setString(1, person.getName());
             preparedStatement.setInt(2, person.getAge());
@@ -98,24 +98,28 @@ public class PersonDAO {
     }
     //
     public void update(int id, Person updatedPerson) {
-//        Person personToBeUpdated = show(id);
-//        personToBeUpdated.setName(updatedPerson.getName());
-//        personToBeUpdated.setAge(updatedPerson.getAge());
-//        personToBeUpdated.setEmail(updatedPerson.getEmail());
-//        for(Person item : people) {
-//            if(item.getId()==id) {
-//                item.setName(updatedPerson.getName());
-//            }
-//        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Person SET name=?, age=?, email=? WHERE Id=?");
+
+            preparedStatement.setString(1, updatedPerson.getName());
+            preparedStatement.setInt(2, updatedPerson.getAge());
+            preparedStatement.setString(3, updatedPerson.getEmail());
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate(); //метод для запроса для изменения данных в БД - ничего не возвращает
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
     public void delete (int id){
-//        Iterator <Person> iter = people.iterator();
-//        while(iter.hasNext()){
-//            Person nextPerson = iter.next();
-//            if(nextPerson.getId()==id){
-//                iter.remove();
-//            }
-//        }
-        //people.removeIf(p->p.getId()==id);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Person WHERE id=?");
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate(); //метод для запроса для изменения данных в БД - ничего не возвращает
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
